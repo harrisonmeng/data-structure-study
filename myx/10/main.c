@@ -1,19 +1,23 @@
-#include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+#define STACK_SIZE 20
 
 typedef struct Stack
 {
     int length;
     int top;
-    char data[];
+    char data[STACK_SIZE];
 }stacktype;
 
 void InitStack(struct Stack *s)
 {
-	s=(struct Stack*)malloc(sizeof(struct Stack));
-	s->top=-1;
+	s = (struct Stack*)malloc(sizeof(struct Stack));
+	s->top = -1;
+	s->length = STACK_SIZE;
 }
 
 int StackEmpty(struct Stack *s)
