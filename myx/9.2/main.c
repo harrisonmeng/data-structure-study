@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
@@ -7,30 +7,30 @@ typedef struct Stack
 {
     int length;
     int top;
-    char data[];
-};
+    char data[10];
+}StackType;
 
-void InitStack(struct Stack *s)
+void InitStack(StackType *s)
 {
-	s=(struct Stack*)malloc(sizeof(struct Stack));
+	s=(StackType*)malloc(sizeof(StackType));
 	s->top=-1;
 }
 
-int StackEmpty(struct Stack *s)
+int StackEmpty(StackType *s)
 {
 	if(s->top==-1)
     	return 1;
     return 0;
 }
 
-int StackFull(struct Stack *s)
+int StackFull(StackType *s)
 {
     if(s->length==s->top+1)
     	return 1;
     return 0;
 }
 
-void Push(int x,struct Stack *s)
+void Push(int x,StackType *s)
 {
     if(StackFull(s))
     {
@@ -41,7 +41,7 @@ void Push(int x,struct Stack *s)
         s->data[++s->top] = x;
 }
 
-void Pop(struct Stack *s)
+void Pop(StackType *s)
 {
     if(StackEmpty(s))
     {
@@ -52,12 +52,12 @@ void Pop(struct Stack *s)
         s->top--;
 }
 
-void FreeStack(struct Stack *s)
+void FreeStack(StackType *s)
 {
 	free(s);
 }
 
-int GetTop(struct Stack *s)
+int GetTop(StackType *s)
 {
 	if(s->top!=-1)
 		return s->data[s->top];
@@ -68,7 +68,7 @@ int fun(char str[],int length)
 {
 	int i=0;
 	int x;
-	struct Stack *p;
+	StackType *p;
 	int a=1;
 	InitStack(p);
 	while(i<length&&a!=0)
