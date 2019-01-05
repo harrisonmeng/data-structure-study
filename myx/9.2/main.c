@@ -1,19 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+#define STACK_SIZE 10
 
 typedef struct Stack
 {
     int length;
     int top;
-    char data[10];
+    char data[STACK_SIZE];
 }StackType;
 
-void InitStack(StackType *s)
+void InitStack(StackType** s)
 {
-	s=(StackType*)malloc(sizeof(StackType));
-	s->top=-1;
+	StackType * p;
+	p=(StackType*)malloc(sizeof(StackType));
+	p->length = STACK_SIZE;
+	p->top=-1;
+	memset(p->data, 0, STACK_SIZE);
+	*s = p;
 }
 
 int StackEmpty(StackType *s)
@@ -70,20 +77,29 @@ int fun(char str[],int length)
 	int x;
 	StackType *p;
 	int a=1;
-	InitStack(p);
+	InitStack(&p);
+	printf("stack top = %d\n", p->top);
+	printf("stack length = %d\n", p->length);
 	while(i<length&&a!=0)
 	{
 		if(str[i]=='I')
-			Push(str[i],p);
+		{
+			if(StackFull(p))
+				a=0;
+			else
+				Push('X',p);		
+		}
 		else if(str[i]=='O')
 		{
-			if(StackEmpty(p)==1)
+			if(StackEmpty(p))
 				a=0;
 			else
 				Pop(p);
 		}
 		else
+		{
 			a=0;
+		}
 		i++;
 	}
 	FreeStack(p);
