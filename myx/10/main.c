@@ -107,7 +107,7 @@ int fun(char str[],int length)
 				else
 					return 0;
 				break;
-		} 
+		}
 		i++;
 	}
 	if(StackEmpty(a)==0)
