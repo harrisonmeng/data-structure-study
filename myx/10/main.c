@@ -75,39 +75,31 @@ int fun(char str[],int length)
 {
 	stacktype *a;
 	int i=0;
+	char e;
 	InitStack(&a);
 	while(i<length)
 	{
-		switch (str[i])
-		{
-			case '(' :
-				Push(str[i], a);
-				break;
-			case '[' :
-				Push(str[i], a);
-				break;
-			case '{' :
-				Push(str[i], a);
-				break;
-			case ')' :
-				if (GetTop(a) == '(' && StackEmpty(a) == 0)
-					Pop(a);
-				else
-					return 0;
-				break;
-			case ']' :
-				if (GetTop(a) == '[' && StackEmpty(a) == 0)
-					Pop(a);
-				else
-					return 0;
-				break;
-			case '}' :
-				if (GetTop(a) == '{' && StackEmpty(a) == 0)
-					Pop(a);
-				else
-					return 0;
-				break;
-		} 
+		if(str[i] == '(')
+			Push(str[i], a);
+		else if(str[i] == '[')
+			Push(str[i], a);
+		else if(str[i] == '{')
+			Push(str[i], a);
+		else if(str[i] == ')')
+			if (GetTop(a) == '(' && StackEmpty(a) == 0)
+				Pop(a);
+			else
+				return 0;
+		else if(str[i] == ']')
+			if (GetTop(a) == '[' && StackEmpty(a) == 0)
+				Pop(a);
+			else
+				return 0;
+		else if(str[i] == '}')
+			if (GetTop(a) == '{' && StackEmpty(a) == 0)
+				Pop(a);
+			else
+				return 0;
 		i++;
 	}
 	if(StackEmpty(a)==0)
