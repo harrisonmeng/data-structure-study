@@ -118,7 +118,7 @@ int fun(char str[],int length)
 
 int main(int argc, char** argv)
 {
-	char a[]="{3+5x[23-(6+7)]+10}";
+	char a[]="{3+5x[23-(6+7)+10}";
 	printf("%d",fun(a,sizeof(a)));	
 	return 0;
 }
