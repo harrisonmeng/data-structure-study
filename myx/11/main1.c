@@ -14,10 +14,15 @@ typedef struct Queue
 	int front,rear;
 }QueueType;
 
-void InitQueue(QueueType *q)                 //input parameter should be **
+void InitQueue(QueueType **q)            
 {
-	q=(QueueType*)malloc(sizeof(QueueType));
-	q->front=q->rear=0;
+	QueueType *a; 
+	int i;
+	a=(QueueType*)malloc(sizeof(QueueType));
+	a->front=a->rear=0;
+	for(i=0;i<Maxsize;i++)
+		a->data[i]='0';
+	*q=a;
 	//use memset to initialize queue data
 }
 
@@ -48,32 +53,27 @@ char deQueue(QueueType *q)
 	return q->data[q->front];
 }
 
-//no need this function, merge it into main()
-void fun(QueueType *q)
-{
-	char a;
+
+
+int main(int argc, char** argv) {
+	QueueType *q; 
+	char a=0;
+	InitQueue(&q);
+	
 	while(1)
 	{
-		a=100;                       
+		                       
 		printf("enter:");            
 		scanf("%c",&a);
 		
-		if(a<=57&&a>=48)             //for better readable, use a <= '9' && a >= '0' 
-			enQueue(q,a);
-		else if((a>=97&&a<=122)&&(QueueEmpty(q)==0))
+		if(a<='9'&&a>='0')            
+			enQueue(q,a);	//After this line is executed the program jumps to 'return 0;' weirdly  
+		else if((a>='a'&&a<='z')&&(QueueEmpty(q)==0))
 			deQueue(q);
 		else
 			break;
+		a=0;
 	}
-}
-int main(int argc, char** argv) {
-	QueueType *q;
-	char a[100]; 
-	
-	
-	q=(QueueType*)malloc(sizeof(QueueType));  //use InitQueeu
-	q->front=q->rear=0;
-	fun(q);
 	FreeQueue(q);
 	return 0;
 }
