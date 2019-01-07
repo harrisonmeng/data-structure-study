@@ -65,7 +65,8 @@ int main(int argc, char** argv) {
 		                       
 		printf("enter:");            
 		scanf("%c",&a);
-		
+		fflush(stdin);
+		 
 		if(a<='9'&&a>='0')            
 			enQueue(q,a);	//After this line is executed the program jumps to 'return 0;' weirdly  
 		else if((a>='a'&&a<='z')&&(QueueEmpty(q)==0))
