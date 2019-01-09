@@ -10,23 +10,25 @@ typedef struct Queue
 	int rear;
 }queuetype;
 
-void InitQueue(struct Queue *q)
+void InitQueue(struct Queue **q)
 {
-	q=(struct Queue*)malloc(sizeof(struct Queue));
-	q->front=q->rear=0;
+	queuetype *s;
+	s=(queuetype*)malloc(sizeof(queuetype));
+	s->front=s->rear=0;
+	*q=s;
 }
 
-void FreeQueue(struct Queue *q)
+void FreeQueue(queuetype *q)
 {
 	free(q);
 }
 
-int QueueEmpty(struct Queue *q)
+int QueueEmpty(queuetype *q)
 {
 	return (q->front==q->rear);
 }
 
-int enQueue(struct Queue *q,int i)
+int enQueue(queuetype *q,int i)
 {
 	if((q->rear+1)%Maxsize==q->front)
 		return 0;
@@ -35,7 +37,7 @@ int enQueue(struct Queue *q,int i)
 	return 1;
 }
 
-char deQueue(struct Queue *q)
+char deQueue(queuetype *q)
 {
 	if(q->front==q->rear)
 		return 0;
@@ -43,7 +45,7 @@ char deQueue(struct Queue *q)
 	return q->data[q->front];
 }
 
-void fun(struct Queue *q,int length)
+void fun(queuetype *q,int length)
 {
 	int i,j,temp;
 	for(i=0,j=length-1;i<j;++i,--j)
@@ -54,9 +56,9 @@ void fun(struct Queue *q,int length)
 	} 
 }
 int main(int argc, char** argv) {
-	struct Queue *q;
+	queuetype *q;
 	int i=0;
-	q=(struct Queue*)malloc(sizeof(struct Queue));
+	InitQueue(&q);
 	for(i=0;i<10;i++)
 		q->data[i]='a'+i; 
 	q->front=9;
