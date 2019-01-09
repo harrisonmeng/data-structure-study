@@ -49,8 +49,8 @@ void fun(queuetype *q,int length)
 {
 	int i,j,temp;
 	for(i=0,j=length-1;i<j;++i,--j)
-	{
-		temp=q->data[i];
+	{                                   //for queue, do not operate the data items directly, only enQueue() and deQueue() can be used to access the data item of queue
+		temp=q->data[i];                //you can create a temporary stack for reversing the data items of queue
 		q->data[i]=q->data[j];
 		q->data[j]=temp;
 	} 
