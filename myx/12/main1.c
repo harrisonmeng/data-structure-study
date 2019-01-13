@@ -23,7 +23,7 @@ void InitQueue(struct Queue **q)
 	queuetype *s;
 	s=(queuetype*)malloc(sizeof(queuetype));
 	s->front=s->rear=0;
-	//memset(s->data, 0, Maxsize);  //init data store  
+	memset(s->data, 0, Maxsize);  
 	*q=s;
 
 }
@@ -120,26 +120,15 @@ void FreeStack(stacktype *s)
 	free(s);
 }
 
-int GetTop(stacktype *s)                       //this function is not needed
+void DisplayQueue(queuetype *q)
 {
-	if(s->top!=-1)
-		return s->data[s->top];
-	return -1;
-}
-
-void fun(queuetype *q,int length)  //do not use separated function for this context, merge this function into main()  
-{
-	int i,temp;
-	stacktype *s;
-	InitStack(&s);
-	for(i=0;i<q->rear;i++)       //do not use for-loop, just use deQueue() until queue is empty
-	{
-		Push(deQueue(q),s);
-	}
-	for(i=0;i<q->rear;i++)       //do not use for-loop, just use pop() until stack is empty
-	{
-		enQueue(q,Pop(s));
-	}
+	int i=q->front;
+	while(i!=q->rear)              
+	{                              
+		printf("%c,",q->data[i]);  
+		i=(i+1)%Maxsize;           
+	}     
+	printf("\n");
 }
 
 int main(int argc, char** argv) {
@@ -148,21 +137,20 @@ int main(int argc, char** argv) {
 	InitQueue(&q);
 	for(i=0;i<10;i++)
 		enQueue(q,'a'+i);
-	i=q->front;
-	while(i!=q->rear)              // create a function: DisplayQueue(queuetype *q) to print all items of queue
-	{                              //
-		printf("%c,",q->data[i]);  //
-		i=(i+1)%Maxsize;           //
-	}                              //
-	printf("\n");
-	fun(q,q->rear+1);
-	i=q->front;
-	while(i!=q->rear)
+	DisplayQueue(q);
+	stacktype *s;
+	InitStack(&s);
+	while(QueueEmpty(q)==0)
 	{
-		printf("%c,",q->data[i]);
-		i=(i+1)%Maxsize;
+		Push(deQueue(q),s);
 	}
-	FreeQueue(q);                   // stack needs to be freed as well
+	while(StackEmpty(s)==0)     //do not use for-loop, just use pop() until stack is empty
+	{
+		enQueue(q,Pop(s));
+	}
+	DisplayQueue(q);
+	FreeQueue(q);   
+	FreeStack(s);                // stack needs to be freed as well
 	return 0;
 }
 
