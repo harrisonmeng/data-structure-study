@@ -13,86 +13,80 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 typedef struct Stack
 {
-    int length;
-    int top;
-    char data[];
-};
+	char data;
+	struct Stack *next;
+}stacktype;
 
-void InitStack(struct Stack *s)
+typedef struct LinkStack
 {
-	s=(struct Stack*)malloc(sizeof(struct Stack));
-	s->top=-1;
+	stacktype *top;
+	int length;
+}linkstack;
+
+void InitLinkStack(linkstack **s)
+{
+	linkstack *p;
+	p=(linkstack *)malloc(sizeof(linkstack));
+	p->top=NULL;
+	p->length=0;
+	*s=p;
 }
 
-int StackEmpty(struct Stack *s)
+void Pull(char x,linkstack *s)
 {
-	if(s->top==-1)
-    	return 1;
-    return 0;
+	stacktype *p;
+	p=(stacktype *)malloc(sizeof(stacktype));
+	p->data=x;
+	p->next=s->top;
+	s->top=p;
+	s->length++;
 }
 
-int StackFull(struct Stack *s)
+int LinkStackEmpty(linkstack *s)
 {
-    if(s->length==s->top+1)
-    	return 1;
-    return 0;
+	return s->top==NULL?0:1;
 }
 
-void Push(char x,struct Stack *s)
+char Pop(linkstack *s)
 {
-    if(StackFull(s))
-    {
-        printf("Full struct Stack!\n");
-        return;
-    }
-    else
-        s->data[++s->top] = x;
+	if(LinkStackEmpty(s)!=0)
+	{
+		stacktype *p;
+		char x;
+		p=s->top;
+		x=p->data;
+		s->top=p->next;
+		free(p);
+		s->length--;
+		return x;
+	}	
+	return 0;
 }
 
-void Pop(struct Stack *s)
-{
-    if(StackEmpty(s))
-    {
-        printf ("Empty stack\n");
-        return;
-    }
-    else
-        s->top--;
-}
-
-void FreeStack(struct Stack *s)
-{
-	free(s);
-}
-
-int GetTop(struct Stack *s)
-{
-	if(s->top!=-1)
-		return s->data[s->top];
-	return -1;
-}
-
-void PrintStack(struct Stack *s)
+void PrintStack(linkstack *s)
 {
 	int i;
+	stacktype *p=s->top;
 	for(i=0;i<s->length;i++)
-		printf("%c",s->data[i]);
+	{
+		printf("%c",p->data);
+		p=p->next;
+	}
+	printf("\n");
 }
 
-int main(int argc, char** argv) {
-	struct Stack *s;
-	s=(struct Stack*)malloc(sizeof(struct Stack));
-	s->length=10;
-	InitStack(s);
-	printf("%d\n",StackEmpty(s));
-	Push('a',s);
-	Push('b',s);
-	Push('c',s);
-	Push('d',s);
-	Push('e',s);
-	printf("%d\n",StackEmpty(s));
+int main()
+{
+	linkstack *s;
+	InitLinkStack(&s);
+	printf("%d\n",LinkStackEmpty(s));
+	Pull('a',s);
+	Pull('b',s);
+	Pull('c',s);
+	Pull('d',s);
+	Pull('e',s);
+	printf("%d\n",LinkStackEmpty(s));
 	PrintStack(s);
-	printf("%d\n",StackEmpty(s));
-	FreeStack(s);
-	return 0;
+	printf("%d\n",LinkStackEmpty(s));
+	free(s);
 }

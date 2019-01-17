@@ -16,40 +16,48 @@ typedef struct Stack
     int length;
     int top;
     char data[];
-};
+}stacktype;
 
-void InitStack(struct Stack *s)
+void InitStack(stacktype **s)
 {
-	s=(struct Stack*)malloc(sizeof(struct Stack));
-	s->top=-1;
+	stacktype *p;
+	int i;
+	p=(stacktype*)malloc(sizeof(stacktype));
+	p->length=10; 
+	p->top=-1;
+	for(i=0;i<p->length;i++)
+	{
+		p->data[i]='0';
+	} 
+	*s=p;
 }
 
-int StackEmpty(struct Stack *s)
+int StackEmpty(stacktype *s)
 {
 	if(s->top==-1)
     	return 1;
     return 0;
 }
 
-int StackFull(struct Stack *s)
+int StackFull(stacktype *s)
 {
     if(s->length==s->top+1)
     	return 1;
     return 0;
 }
 
-void Push(char x,struct Stack *s)
+void Push(char x,stacktype *s)
 {
     if(StackFull(s))
     {
-        printf("Full struct Stack!\n");
+        printf("Full stacktype!\n");
         return;
     }
     else
         s->data[++s->top] = x;
 }
 
-void Pop(struct Stack *s)
+void Pop(stacktype *s)
 {
     if(StackEmpty(s))
     {
@@ -60,30 +68,29 @@ void Pop(struct Stack *s)
         s->top--;
 }
 
-void FreeStack(struct Stack *s)
+void FreeStack(stacktype *s)
 {
 	free(s);
 }
 
-int GetTop(struct Stack *s)
+int GetTop(stacktype *s)
 {
 	if(s->top!=-1)
 		return s->data[s->top];
 	return -1;
 }
 
-void PrintStack(struct Stack *s)
+void PrintStack(stacktype *s)
 {
 	int i;
-	for(i=0;i<s->length;i++)
+	for(i=s->top;i>=0;i--)
 		printf("%c",s->data[i]);
+	printf("\n");
 }
 
 int main(int argc, char** argv) {
-	struct Stack *s;
-	s=(struct Stack*)malloc(sizeof(struct Stack));
-	s->length=10;
-	InitStack(s);
+	stacktype *s;
+	InitStack(&s);
 	printf("%d\n",StackEmpty(s));
 	Push('a',s);
 	Push('b',s);
