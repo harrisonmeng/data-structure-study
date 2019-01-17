@@ -20,7 +20,6 @@ typedef struct Stack
 typedef struct LinkStack
 {
 	stacktype *top;
-	int length;
 }linkstack;
 
 void InitLinkStack(linkstack **s)
@@ -28,18 +27,16 @@ void InitLinkStack(linkstack **s)
 	linkstack *p;
 	p=(linkstack *)malloc(sizeof(linkstack));
 	p->top=NULL;
-	p->length=0;
 	*s=p;
 }
 
-void Pull(char x,linkstack *s)
+void Push(char x,linkstack *s)
 {
 	stacktype *p;
 	p=(stacktype *)malloc(sizeof(stacktype));
 	p->data=x;
 	p->next=s->top;
 	s->top=p;
-	s->length++;
 }
 
 int LinkStackEmpty(linkstack *s)
@@ -57,7 +54,6 @@ char Pop(linkstack *s)
 		x=p->data;
 		s->top=p->next;
 		free(p);
-		s->length--;
 		return x;
 	}	
 	return 0;
@@ -65,9 +61,8 @@ char Pop(linkstack *s)
 
 void PrintStack(linkstack *s)
 {
-	int i;
 	stacktype *p=s->top;
-	for(i=0;i<s->length;i++)
+	while(p->next!=NULL)
 	{
 		printf("%c",p->data);
 		p=p->next;
@@ -80,11 +75,11 @@ int main()
 	linkstack *s;
 	InitLinkStack(&s);
 	printf("%d\n",LinkStackEmpty(s));
-	Pull('a',s);
-	Pull('b',s);
-	Pull('c',s);
-	Pull('d',s);
-	Pull('e',s);
+	Push('a',s);
+	Push('b',s);
+	Push('c',s);
+	Push('d',s);
+	Push('e',s);
 	printf("%d\n",LinkStackEmpty(s));
 	PrintStack(s);
 	printf("%d\n",LinkStackEmpty(s));
