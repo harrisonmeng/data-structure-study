@@ -62,7 +62,7 @@ char Pop(linkstack *s)
 void PrintStack(linkstack *s)
 {
 	stacktype *p=s->top;
-	while(p->next!=NULL)
+	while(p!=NULL)
 	{
 		printf("%c",p->data);
 		p=p->next;

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define Maxisize 20 
+#define Maxsize 20 
 //实现顺序栈（假设栈中元素的类型为char）的各种基本运算，并在此基础上设计一个程序，完成以下功能：
 //1.初始化栈s
 //2.判断栈s是否非空 
@@ -23,7 +23,7 @@ void InitStack(stacktype **s)
 	stacktype *p;
 	int i;
 	p=(stacktype*)malloc(sizeof(stacktype));
-	p->length=10; 
+	p->length=Maxsize; 
 	p->top=-1;
 	for(i=0;i<p->length;i++)
 	{
