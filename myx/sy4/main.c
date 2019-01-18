@@ -74,15 +74,14 @@ char deQueue(struct qhead *q)
 	return out;
 }
 
-void OutQueue(struct qhead *q)
+void DisplayQueue(linkqueue *q)
 {
-	struct qnode *t;
-	while(QueueEmpty(q)==0)
+	queuenode *t = q->front;
+
+	while(t)
 	{
-		t=NULL;
-		t=q->front;
-		printf("%c ",q->front->data);
-		q->front=q->front->next;                      
+		printf("%c ",t->data);
+		t = t->next;                      
 	}
 }
 
@@ -101,7 +100,7 @@ void FreeQueue(struct qhead *q)
 }
 
 int main(int argc, char** argv) {
-	struct qhead *q;
+	linkqueue *q;
 	InitQueue(&q);
 	printf("%d\n",QueueEmpty(q));
 	enQueue(q,'a');
@@ -111,7 +110,7 @@ int main(int argc, char** argv) {
 	enQueue(q,'d');
 	enQueue(q,'e');
 	enQueue(q,'f');
-	OutQueue(q);
+	DisplayQueue(q);
 	FreeQueue(q);
 	return 0;
 }
