@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 #define Maxsize 20
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
@@ -23,6 +24,7 @@ void InitQueue(queuetype **q)
 {
 	queuetype *p;
 	p=(queuetype*)malloc(sizeof(queuetype));
+	memset(p, '.', Maxsize);
 	p->front=p->rear=0;
 	*q=p;
 }
@@ -48,11 +50,13 @@ int enQueue(queuetype *q,char i)
 
 char deQueue(queuetype *q)
 {
-	int e;
+	char e;
 	if(q->front==q->rear)
 		return 0;
 	q->front=(q->front+1)%Maxsize;
-	return q->data[q->front];
+	e = q->data[q->front];
+	q->data[q->front]='.';
+	return e;
 }
 
 void OutQueue(queuetype *q)
@@ -61,18 +65,35 @@ void OutQueue(queuetype *q)
 		printf("%c ",deQueue(q));
 }
 
+void DisplayQueue(queuetype* q)
+{
+	for(int i=0;i<Maxsize;i++)
+	{
+		printf("%c ", q->data[i]);
+	}
+	printf("\n");
+}
+
+
 int main(int argc, char** argv) {
 	queuetype *q;
 	InitQueue(&q);
-	printf("%d\n",QueueEmpty(q));
-	enQueue(q,'a');
+
+    enQueue(q,'a');
 	enQueue(q,'b');
 	enQueue(q,'c');
-	printf("%c\n",deQueue(q));
 	enQueue(q,'d');
 	enQueue(q,'e');
-	enQueue(q,'f');
-	OutQueue(q);
+	enQueue(q,'f');	
+
+    for(int i=0;i<20;i++)
+    {
+    	DisplayQueue(q);
+    	enQueue(q,'g'+i);
+		deQueue(q);
+
+	}
+
 	FreeQueue(q);
 	return 0;
 }
