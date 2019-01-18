@@ -16,17 +16,26 @@ typedef struct qnode
 {
 	char data;
 	struct qnode *next;
-};                                    //fix this compiler warning by giving name for this typedef struct
+}queuenode;                                    //fix this compiler warning by giving name for this typedef struct
 
 typedef struct qhead
 {
 	struct qnode *front;
 	struct qnode *rear;
-};
+}linkqueue;
 
 int QueueEmpty(struct qhead *q)
 {
 	return(q->front==NULL);
+}
+
+void InitQueue(linkqueue **q)
+{
+	linkqueue *p;
+	p=(linkqueue *)malloc(sizeof(linkqueue));
+	p->front=NULL;
+	p->rear=NULL;
+	*q=p;
 }
 
 void enQueue(struct qhead *q,char i)
@@ -73,8 +82,7 @@ void OutQueue(struct qhead *q)
 		t=NULL;
 		t=q->front;
 		printf("%c ",q->front->data);
-		q->front=q->front->next;
-		free(t);                         //do not free node, this function just print value of all queue items 
+		q->front=q->front->next;                      
 	}
 }
 
@@ -94,14 +102,12 @@ void FreeQueue(struct qhead *q)
 
 int main(int argc, char** argv) {
 	struct qhead *q;
-	q=(struct qhead*)malloc(sizeof(qhead));    //do not do this in main(), create function InitQueue() to do this 
-	q->front=NULL;                             //
-	q->rear=NULL;                              //
+	InitQueue(&q);
 	printf("%d\n",QueueEmpty(q));
 	enQueue(q,'a');
 	enQueue(q,'b');
 	enQueue(q,'c');
-	deQueue(q);
+	printf("%c\n",deQueue(q));
 	enQueue(q,'d');
 	enQueue(q,'e');
 	enQueue(q,'f');

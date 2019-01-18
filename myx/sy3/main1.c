@@ -17,25 +17,25 @@ typedef struct Queue
 {
 	char data[Maxsize];
 	int front,rear;
-};
+}queuetype;
 
-void InitQueue(struct Queue *q)
+void InitQueue(queuetype *q)
 {
-	q=(struct Queue*)malloc(sizeof(struct Queue));
+	q=(queuetype*)malloc(sizeof(queuetype));
 	q->front=q->rear=0;
 }
 
-void FreeQueue(struct Queue *q)
+void FreeQueue(queuetype *q)
 {
 	free(q);
 }
 
-int QueueEmpty(struct Queue *q)
+int QueueEmpty(queuetype *q)
 {
 	return (q->front==q->rear);
 }
 
-int enQueue(struct Queue *q,char i)
+int enQueue(queuetype *q,char i)
 {
 	if((q->rear+1)%Maxsize==q->front)
 		return 0;
@@ -44,7 +44,7 @@ int enQueue(struct Queue *q,char i)
 	return 1;
 }
 
-char deQueue(struct Queue *q)
+char deQueue(queuetype *q)
 {
 	int e;
 	if(q->front==q->rear)
@@ -53,15 +53,15 @@ char deQueue(struct Queue *q)
 	return q->data[q->front];
 }
 
-void OutQueue(struct Queue *q)
+void OutQueue(queuetype *q)
 {
 	while(QueueEmpty(q)==0)
 		printf("%c ",deQueue(q));
 }
 
 int main(int argc, char** argv) {
-	struct Queue *q;
-	q=(struct Queue*)malloc(sizeof(struct Queue));
+	queuetype *q;
+	q=(queuetype*)malloc(sizeof(queuetype));
 	q->front=q->rear=0;
 	InitQueue(q);
 	printf("%d\n",QueueEmpty(q));
