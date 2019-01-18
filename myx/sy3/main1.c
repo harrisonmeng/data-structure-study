@@ -19,10 +19,12 @@ typedef struct Queue
 	int front,rear;
 }queuetype;
 
-void InitQueue(queuetype *q)
+void InitQueue(queuetype **q)
 {
-	q=(queuetype*)malloc(sizeof(queuetype));
-	q->front=q->rear=0;
+	queuetype *p;
+	p=(queuetype*)malloc(sizeof(queuetype));
+	p->front=p->rear=0;
+	*q=p;
 }
 
 void FreeQueue(queuetype *q)
@@ -61,9 +63,7 @@ void OutQueue(queuetype *q)
 
 int main(int argc, char** argv) {
 	queuetype *q;
-	q=(queuetype*)malloc(sizeof(queuetype));
-	q->front=q->rear=0;
-	InitQueue(q);
+	InitQueue(&q);
 	printf("%d\n",QueueEmpty(q));
 	enQueue(q,'a');
 	enQueue(q,'b');
