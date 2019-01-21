@@ -1,4 +1,4 @@
-#define Maxsize 200
+#define Maxsize 1000 
 
 typedef struct Stack
 {

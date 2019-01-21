@@ -39,8 +39,11 @@ void Push(char x,int n,stacktype *s)
         return;
     }
     else
-        s->data[++s->top] = x;
+    {
+    	s->top++;
+        s->data[s->top] = x;
 		s->number[s->top] = n;
+	}
 }
 
 void Pop(stacktype *s)
