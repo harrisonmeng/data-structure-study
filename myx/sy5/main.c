@@ -6,110 +6,122 @@
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 int *ReadMaze(int *width,int *height)
 {
-	FILE *maze;
-	maze=fopen("maze.txt","r");
+	FILE *fmaze;
+	fmaze = fopen("maze.txt", "r");
 	int *a;
-	int i=0,j=0,x=0,y=0;
-	int temp=0;
+	int i = 0, j = 0, x = 0, y = 0;
+	int temp = 0;
 	
-	while(fgetc(maze)!='\n')
+	while(fgetc(fmaze) != '\n')
 	{
 		x++;
 	}
-	rewind(maze);
-	while(!feof(maze))
+	rewind(fmaze);
+	while(!feof(fmaze))
 	{
-		if(fgetc(maze)=='\n')
+		if(fgetc(fmaze) == '\n')
 			y++;
 	}
 	y++;
 	
-	i=x*y;
-	printf("%d\n",i);
-	a=(int *)malloc(sizeof(int*)*i);
-	rewind(maze);
-	for(j=0;j<i;)
+	i = x * y;
+	printf("%d\n", i);
+	a = (int *)malloc(sizeof(int*) * i);
+	rewind(fmaze);
+	for(j = 0; j < i; )
 	{
-		if((temp=fgetc(maze))!='\n')
+		if((temp = fgetc(fmaze)) != '\n')
 		{
-			a[j]=(temp==42?1:0);
+			a[j] = (temp == '*' ? 1 : 0);
 			j++;
 		}	
 	}
-	fclose(maze);
-	*width=x;
-	*height=y;
+	fclose(fmaze);
+	*width = x;
+	*height = y;
 	return a;
 }
 
-void PrintMaze(int *maze,int y,int x)
+void PrintMaze(int *maze, int width, int height)
 {
-	int i,j;
-	for(i=0;i<x;i++)
+	int i, j;
+	for(i = 0; i < height; i++)
 	{
-		for(j=0;j<y;j++)
+		for(j = 0; j < width; j++)
 		{
-			printf("%c",maze[i*y+j]==0?' ':(maze[i*y+j]==1?'@':(maze[i*y+j]==2?'#':' ')));
+			switch (maze[i*width+j])
+			{
+				case 0:
+				case 3:
+					printf(" ");
+					break;
+				case 1:
+					printf("@");
+					break;
+				case 2:
+					printf("#");
+					break;
+			}
 		}
 		printf("\n");
 	}
 }
 
-int *Find(int *maze,int width,int height)
+int *Find(int *maze, int width, int height, int entry_x, int entry_y, int exit_x, int exit_y)
 {
-	linkstack *s;
+	void *s;
+	linknode *p;
+	int i;
+	
+	i = (entry_y-1) * width + entry_x - 1;
 	LinkStackInit(&s);
-	int i=width+1;
-	LinkStackPush(maze[width+1],2,2,s);
-	while(s->node->x!=25||s->node->y!=21)
+	LinkStackPush(entry_x, entry_y, s);
+	p = LinkStackPop(s);
+	while(p->x != exit_x || p->y != exit_y)
 	{
-		if(maze[i]!=0)
+		if(maze[i] != 0)
 		{
-			LinkStackPop(s);
-			maze[i]=3;
+			p = LinkStackPop(s);
+			maze[i] = 3;
 		}
 		else
 		{
-			if(maze[i-width]==0)
-				LinkStackPush(maze[i-width],i%width+1,i/width,s);
-	 		if(maze[i-1]==0)
-				LinkStackPush(maze[i-1],i%width,i/width+1,s);
-			if(maze[i+1]==0)
-				LinkStackPush(maze[i+1],i%width+2,i/width+1,s);
-			if(maze[i+width]==0)
-				LinkStackPush(maze[i+width],i%width+1,i/width+2,s);
-			if((maze[i-width]!=0)&&(maze[i-1]!=0)&&(maze[i+1]!=0)&&(maze[i+width]!=0))
-			{
-				LinkStackPop(s);
-				maze[i]=3;
-			}
-			else
-				maze[i]=2;
+			LinkStackPush(p->x, p->y, s);
+			if(maze[i-width] == 0)
+				LinkStackPush(i%width+1, i/width, s);
+			if(maze[i+1] == 0)
+				LinkStackPush(i%width+2, i/width+1, s);
+	 		if(maze[i-1] == 0)
+				LinkStackPush(i%width, i/width+1, s);
+			if(maze[i+width] == 0)
+				LinkStackPush(i%width+1, i/width+2, s);
+			maze[i] = 2;
+			p = LinkStackPop(s);
 		}
-		i=(s->node->x-1)+(s->node->y-1)*width;
+		i = (p->x - 1)+(p->y - 1) * width;
 	}
-	i=height*width-width-2;
-	maze[i]=2;
-	LinkStackPush(maze[i],width-1,height-1,s);
+	i = height*width-width-2;
+	maze[i] = 2;
+	LinkStackPush(width-1, height-1, s);
 	LinkStackFree(s);
 	
 	return maze;
 }
 
-int main(int argc, char** argv) {
+int main(int argc,  char** argv) {
 	int *maze;
-	int i=0;
-	int width,height;
-	maze=ReadMaze(&width,&height);
-	PrintMaze(maze,width,height);
+	int i = 0;
+	int width, height;
+	maze = ReadMaze(&width, &height);
+	PrintMaze(maze, width, height);
 	
 	printf("\n");
-	for(i=0;i<width;i++)
+	for(i = 0;i<width;i++)
 		printf("=");
 	printf("\n\n");
 	
-	maze=Find(maze,width,height);
-	PrintMaze(maze,width,height);
-	free(maze);
+	maze = Find(maze, width, height, 2, 2, width-1, height-1);
+	PrintMaze(maze, width, height);
+	free(maze); 
 	return 0;
 }

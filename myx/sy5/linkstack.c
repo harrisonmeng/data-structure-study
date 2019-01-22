@@ -3,46 +3,67 @@
 #include <string.h>
 #include "linkstack.h"
 
-void LinkStackInit(linkstack **s)
+typedef struct LinkStackStruct
+{
+    int length;
+    linknode* node; 
+}linkstack;
+
+void LinkStackInit(void **s)
 {
 	linkstack *p;
-	p=(linkstack *)malloc(sizeof(linkstack));
-	p->node=NULL;
-	p->length=0;
-	*s=p;
+	
+	p = (linkstack *)malloc(sizeof(linkstack));
+	p->node = NULL;
+	p->length = 0;
+	*s = p;
 }
 
-void LinkStackFree(linkstack *s)
+void LinkStackFree(void *s)
 {
-	free(s); 
-}
-
-void LinkStackPush(int m,int a,int b,linkstack *s)
-{
+	linkstack *sp = (linkstack*)s;
 	linknode *p;
-	p=(linknode *)malloc(sizeof(linknode));
-	p->data=m;
-	p->x=a;
-	p->y=b;
-	p->next=s->node;
-	s->node=p;
-	s->length++;
+	
+	if(s!=NULL)
+	{
+		while(sp->node != NULL)
+		{
+			p = sp->node;
+			sp->node = p->next;
+			free(p);
+		}
+		free(sp);
+	}
+}
+
+void LinkStackPush(int a, int b, void *s)
+{
+	linkstack *sp = (linkstack*)s;
+	linknode *p;
+	
+	p = (linknode *)malloc(sizeof(linknode));
+	p->x = a;
+	p->y = b;
+	p->next = sp->node;
+	sp->node = p;
+	sp->length++;
 }
 
 int LinkStackEmpty(linkstack *s)
 {
-	return s->node==NULL?0:1;
+	return s->node == NULL?0:1;
 }
 
-linknode* LinkStackPop(linkstack *s)
+linknode* LinkStackPop(void *s)
 {
-	if(LinkStackEmpty(s)!=0)
+	linkstack *sp = (linkstack*)s;
+	linknode *p;
+
+	if(LinkStackEmpty(sp) != 0)
 	{
-		linknode *p;
-		char x;
-		p=s->node;
-		s->node=p->next;
-		s->length--;
+		p = sp->node;
+		sp->node = p->next;
+		sp->length--;
 		return p;
 	}	
 	return 0;
@@ -50,11 +71,12 @@ linknode* LinkStackPop(linkstack *s)
 
 void PrintStack(linkstack *s)
 {
-	linknode *p=s->node;
-	while(p!=NULL)
+	linknode *p = s->node;
+	
+	while(p != NULL)
 	{
-		printf("%c",p->data);
-		p=p->next;
+		printf("(%d,%d)", p->x, p->y);
+		p = p->next;
 	}
 	printf("\n");
 }
