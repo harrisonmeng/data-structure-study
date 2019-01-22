@@ -1,18 +1,17 @@
 typedef struct LinkNodeStruct
 {
-	int x;
-	int y;
-	char Data;
-	LinkNodeStruct* Next;
-}LinkNode;
+	int number;
+	int data;
+	LinkNodeStruct* next;
+}linknode;
 
 typedef struct LinkStackStruct
 {
     int length;
-    LinkNode* node; 
-}LinkStack;
+    linknode* node; 
+}linkstack;
 
-void LinkStackInit(LinkStack **s);
-void LinkStackFree(LinkStack *s);
-void LinkStackPush(LinkNode* node, LinkStack *s);
-LinkNode* LinkStackPop(LinkStack *s);
+void LinkStackInit(linkstack **s);
+void LinkStackFree(linkstack *s);
+void LinkStackPush(int m,int n,linkstack *s);
+linknode* LinkStackPop(linkstack *s);

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "stack.h"
+#include "linkstack.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 int *ReadMaze(int *h,int *l)
@@ -57,41 +57,41 @@ void PrintMaze(int *maze,int y,int x)
 
 int *Find(int *maze,int h,int l)
 {
-	stacktype *s;
-	InitStack(&s);
+	linkstack *s;
+	LinkStackInit(&s);
 	int i=h+1;
-	Push(maze[h+1],h+1,s);
-	while(s->number[s->top]!=h*l-h-2)
+	LinkStackPush(maze[h+1],h+1,s);
+	while(s->node->number!=h*l-h-2)
 	{
 		if(maze[i]!=0)
 		{
-			Pop(s);
+			LinkStackPop(s);
 			maze[i]=3;
 		}
 		else
 		{
 			if(maze[i-h]==0)
-				Push(maze[i-h],i-h,s);
+				LinkStackPush(maze[i-h],i-h,s);
 	 		if(maze[i-1]==0)
-				Push(maze[i-1],i-1,s);
+				LinkStackPush(maze[i-1],i-1,s);
 			if(maze[i+1]==0)
-				Push(maze[i+1],i+1,s);
+				LinkStackPush(maze[i+1],i+1,s);
 			if(maze[i+h]==0)
-				Push(maze[i+h],i+h,s);
+				LinkStackPush(maze[i+h],i+h,s);
 			if((maze[i-h]!=0)&&(maze[i-1]!=0)&&(maze[i+1]!=0)&&(maze[i+h]!=0))
 			{
-				Pop(s);
+				LinkStackPop(s);
 				maze[i]=3;
 			}
 			else
 				maze[i]=2;
 		}
-		i=s->number[s->top];
+		i=s->node->number;
 	}
 	i=l*h-h-2;
 	maze[i]=2;
-	Push(maze[i],i,s);
-	
+	LinkStackPush(maze[i],i,s);
+	LinkStackFree(s);
 	
 	return maze;
 }
@@ -100,7 +100,6 @@ int main(int argc, char** argv) {
 	int *maze,*way;
 	int i=0;
 	int h,l;
-	stacktype *s; 
 	maze=ReadMaze(&h,&l);
 	PrintMaze(maze,h,l);
 	
@@ -109,7 +108,8 @@ int main(int argc, char** argv) {
 		printf("=");
 	printf("\n\n");
 	
-	way=Find(maze,h,l);
-	PrintMaze(way,h,l);
+	maze=Find(maze,h,l);
+	PrintMaze(maze,h,l);
+	free(maze);
 	return 0;
 }
