@@ -17,12 +17,13 @@ void LinkStackFree(linkstack *s)
 	free(s); 
 }
 
-void LinkStackPush(int m,int n,linkstack *s)
+void LinkStackPush(int m,int a,int b,linkstack *s)
 {
 	linknode *p;
 	p=(linknode *)malloc(sizeof(linknode));
 	p->data=m;
-	p->number=n;
+	p->x=a;
+	p->y=b;
 	p->next=s->node;
 	s->node=p;
 	s->length++;
