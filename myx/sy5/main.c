@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "linkstack.h"
+#include "queue.h"
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
 int *ReadMaze(int *width,int *height)
 {
 	FILE *fmaze;
@@ -55,6 +56,9 @@ void PrintMaze(int *maze, int width, int height)
 				case 3:
 					printf(" ");
 					break;
+				case 4:
+					printf("0");
+					break;
 				case 1:
 					printf("@");
 					break;
@@ -69,42 +73,56 @@ void PrintMaze(int *maze, int width, int height)
 
 int *Find(int *maze, int width, int height, int entry_x, int entry_y, int exit_x, int exit_y)
 {
-	void *s;
-	linknode *p;
+	queuetype *q;
+	datatype d;
 	int i;
+	int tag;
 	
-	i = (entry_y-1) * width + entry_x - 1;
-	LinkStackInit(&s);
-	LinkStackPush(entry_x, entry_y, s);
-	p = LinkStackPop(s);
-	while(p->x != exit_x || p->y != exit_y)
+	InitQueue(&q);
+	d.parent = 0;
+	d.x = 0;
+	d.y = 0;
+	d.tag = 0;
+	tag = 0;
+	enQueue(q, entry_x, entry_y, 0, tag);
+	d = deQueue(q);
+	while(d.x != exit_x || d.y != exit_y)
 	{
-		if(maze[i] != 0)
+		if(maze[d.x - 1 + (d.y - 2) * width] == 0)
 		{
-			p = LinkStackPop(s);
-			maze[i] = 3;
+			enQueue(q, d.x, d.y - 1, d.tag, ++tag);	
+			//maze[d.x - 1 + (d.y - 2) * width] = 4;
 		}
-		else
+		if(maze[d.x - 2 + (d.y - 1) * width] == 0)
 		{
-			LinkStackPush(p->x, p->y, s);
-			if(maze[i-width] == 0)
-				LinkStackPush(i%width+1, i/width, s);
-			if(maze[i+1] == 0)
-				LinkStackPush(i%width+2, i/width+1, s);
-	 		if(maze[i-1] == 0)
-				LinkStackPush(i%width, i/width+1, s);
-			if(maze[i+width] == 0)
-				LinkStackPush(i%width+1, i/width+2, s);
-			maze[i] = 2;
-			p = LinkStackPop(s);
+			enQueue(q, d.x - 1 , d.y, d.tag, ++tag);
+			//maze[d.x - 2 + (d.y - 1) * width] = 4;
 		}
-		i = (p->x - 1)+(p->y - 1) * width;
+ 		if(maze[d.x + (d.y - 1 ) * width] == 0)
+		{
+			enQueue(q, d.x + 1, d.y, d.tag, ++tag);
+			//maze[d.x + (d.y - 1 ) * width] = 4;
+		}
+		if(maze[d.x -1 + d.y * width] == 0)
+		{
+			enQueue(q, d.x, d.y + 1, d.tag, ++tag);
+			//maze[d.x -1 + d.y * width] = 4;
+		}
+		maze[d.x - 1 + (d.y - 1) * width] = 3;
+		d = deQueue(q);
+		printf("%d,%d,%d,%d\n", d.x, d.y, d.parent, d.tag);
 	}
-	i = height*width-width-2;
-	maze[i] = 2;
-	LinkStackPush(width-1, height-1, s);
-	LinkStackFree(s);
 	
+	while(d.x != 2 || d.y != 2)
+	{
+		maze[d.x - 1 + (d.y - 1) * width] = 2;
+	
+		d.x = q->info[d.parent].x;
+		d.y = q->info[d.parent].y; 
+		d.tag = q->info[d.parent].tag;	
+		d.parent = q->info[d.parent].parent;
+	}
+	maze[width + 1] = 2;
 	return maze;
 }
 

@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1548258438 source:c:\users\17386\documents\github\data-structure-study\myx\sy5\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"queue.h"
+
+1548259214 c:\users\17386\documents\github\data-structure-study\myx\sy5\queue.h
+
+1548255229 source:c:\users\17386\documents\github\data-structure-study\myx\sy5\queue.c
+	<stdio.h>
+	<stdlib.h>
+	<memory.h>
+	"queue.h"
+
