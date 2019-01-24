@@ -38,7 +38,7 @@ int deQueue(queuetype *q)
 		return 0;
 	q->front=(q->front+1)%Maxsize;
 	e = q->data[q->front];
-	q->data[q->front]='.';
+	q->data[q->front]=0;
 	return e;
 }
 
@@ -46,13 +46,16 @@ void OutQueue(queuetype *q)
 {
 	while(QueueEmpty(q)==0)
 		printf("%d ",deQueue(q));
+    printf("\n");
 }
 
 void DisplayQueue(queuetype* q)
 {
-	for(int i=0;q->data[i] != -1;i++)
+    int i = 0;
+	while(q->data[i] != -1 && i < Maxsize);
 	{
 		printf("%d ", q->data[i]);
+		i++;
 	}
 	printf("\n");
 }

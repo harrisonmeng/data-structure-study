@@ -14,21 +14,30 @@ void PaiDui(int binglihao, queuetype *q)
 {
     printf("choice:1\n");
     enQueue(q, binglihao);
+    printf("%d ", binglihao);
+    system("pause");
+    system("cls");
 }
 
 void JiuZhen(queuetype *q)
 {
-    deQueue(q);
+    printf("%d ",deQueue(q));
+    system("pause");
+    system("cls");
 }
 
 void ChaKan(queuetype *q)
 {
     DisplayQueue(q);
+    system("pause");
+    system("cls");
 }
 
 void YiCiJiuZhen(queuetype *q)
 {
     OutQueue(q);
+    system("pause");
+    system("cls");
 }
 
 int main()
@@ -54,7 +63,6 @@ int main()
             break;
         case 4:
             YiCiJiuZhen(q);
-            break;
         case 5:
             FreeQueue(q);
             return 0;
