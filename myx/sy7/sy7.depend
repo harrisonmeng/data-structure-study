@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1548341371 source:c:\users\17386\documents\github\data-structure-study\myx\sy7\stack.c
+	<stdio.h>
+	<stdlib.h>
+	"stack.h"
+
+1548341761 c:\users\17386\documents\github\data-structure-study\myx\sy7\stack.h
+
+1548341430 source:c:\users\17386\documents\github\data-structure-study\myx\sy7\main.c
+	<stdio.h>
+	<stdlib.h>
+	"stack.h"
+
