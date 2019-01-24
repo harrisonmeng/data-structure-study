@@ -4,37 +4,40 @@
 int Menu()
 {
     int choice;
-    printf("1:paidui\n2:jiuzhen\n3:chakanpaidui\n4:yicijiuzhen\n5:xiaban\n");
+    printf("1:Line Up\n2:Seek\n3:Check\n4:Seek Till The End\n5:Off\n");
     scanf("%d", &choice);
     system("cls");
     return choice;
 }
 
-void PaiDui(int binglihao, queuetype *q)
+void LineUp(int binglihao, queuetype *q)
 {
-    printf("choice:1\n");
+    printf("choice:Line Up\n");
     enQueue(q, binglihao);
-    printf("%d ", binglihao);
+    printf("Case number : %d inserted.\n", binglihao);
     system("pause");
     system("cls");
 }
 
-void JiuZhen(queuetype *q)
+void Seek(queuetype *q)
 {
-    printf("%d ",deQueue(q));
+    printf("choice:Seek\n");
+    printf("Current case number : %d.\n",deQueue(q));
     system("pause");
     system("cls");
 }
 
-void ChaKan(queuetype *q)
+void Check(queuetype *q)
 {
+    printf("choice:Check\n");
     DisplayQueue(q);
     system("pause");
     system("cls");
 }
 
-void YiCiJiuZhen(queuetype *q)
+void SeekTillTheEnd(queuetype *q)
 {
+    printf("choice:Seek Till The End\n");
     OutQueue(q);
     system("pause");
     system("cls");
@@ -52,17 +55,17 @@ int main()
         switch (Menu())
         {
         case 1:
-            PaiDui(binglihao, q);
+            LineUp(binglihao, q);
             binglihao++;
             break;
         case 2:
-            JiuZhen(q);
+            Seek(q);
             break;
         case 3:
-            ChaKan(q);
+            Check(q);
             break;
         case 4:
-            YiCiJiuZhen(q);
+            SeekTillTheEnd(q);
         case 5:
             FreeQueue(q);
             return 0;

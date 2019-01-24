@@ -7,7 +7,7 @@ void InitQueue(queuetype **q)
 {
 	queuetype *p;
 	p=(queuetype*)malloc(sizeof(queuetype));
-	memset(p, -1, Maxsize);
+	memset(p, 101, Maxsize);
 	p->front=p->rear=0;
 	*q=p;
 }
@@ -33,29 +33,45 @@ int enQueue(queuetype *q,int i)
 
 int deQueue(queuetype *q)
 {
-	int e;
-	if(q->front==q->rear)
-		return 0;
-	q->front=(q->front+1)%Maxsize;
-	e = q->data[q->front];
-	q->data[q->front]=0;
-	return e;
+    int e;
+    if (QueueEmpty(q) == 1)
+    {
+        printf("No patient.");
+        return -1;
+    }
+    else
+    {
+
+        q->front=(q->front+1)%Maxsize;
+        e = q->data[q->front];
+        q->data[q->front]=101;
+        return e;
+    }
 }
 
 void OutQueue(queuetype *q)
 {
-	while(QueueEmpty(q)==0)
-		printf("%d ",deQueue(q));
-    printf("\n");
+    if (QueueEmpty(q) == 1)
+        printf("No patient.");
+    else
+    {
+        while(QueueEmpty(q)==0)
+            printf("%d ",deQueue(q));
+        printf("\n");
+    }
 }
 
 void DisplayQueue(queuetype* q)
 {
-    int i = 0;
-	while(q->data[i] != -1 && i < Maxsize);
-	{
-		printf("%d ", q->data[i]);
-		i++;
-	}
-	printf("\n");
+    if (QueueEmpty(q) == 1)
+        printf("No patient.");
+    else
+    {
+        for(int i = 0; i < Maxsize; i++)
+        {
+            if (q->data[i] < 20 && q->data[i] >= 0)
+                printf("%d ", q->data[i]);
+        }
+        printf("\n");
+    }
 }

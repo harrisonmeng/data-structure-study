@@ -10,4 +10,4 @@ int QueueEmpty(queuetype *q);
 int enQueue(queuetype *q,int i);
 int deQueue(queuetype *q);
 void OutQueue(queuetype *q);
-void DisplayQueue(queuetype* q);
+void DisplayQueue(queuetype *q);
