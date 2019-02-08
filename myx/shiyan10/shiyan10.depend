@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1548952052 source:c:\users\17386\documents\github\data-structure-study\myx\shiyan10\str.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"str.h"
+
+1548950324 c:\users\17386\documents\github\data-structure-study\myx\shiyan10\str.h
+
+1549030944 source:c:\users\17386\documents\github\data-structure-study\myx\shiyan10\main.c
+	<stdio.h>
+	<stdlib.h>
+	"str.h"
+
