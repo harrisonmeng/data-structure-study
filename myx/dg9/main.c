@@ -22,15 +22,22 @@ int Max(linknode *p)
     if(p->next == NULL)
         return p->data;
     else
-        return (p->data > Max(p->next) ? p->data : Max(p->next));
+    {
+        int temp = Max(p->next);
+        return (p->data > temp ? p->data : temp);
+    }
 }
 
 int Min(linknode *p)
 {
+    p = p->next;
     if(p->next == NULL)
         return p->data;
     else
-        return (p->data < Max(p->next) ? p->data : Max(p->next));
+    {
+        int temp = Min(p);
+        return (p->data < temp ? p->data : temp);
+    }
 }
 
 int main()
@@ -40,10 +47,10 @@ int main()
     head->next = NULL;
     head->data = 0;
     tail = head;
-    for(int i = 0; i < 5; i++)
+    for(int i = 10; i < 30; i++)
     {
         tail->next = (linknode*)malloc(sizeof(linknode));
-        tail->next->data = i;
+        tail->next->data = rand() % 100;
         tail->next->next = NULL;
         tail = tail->next;
     }
