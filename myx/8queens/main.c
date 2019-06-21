@@ -1,21 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define SIZE 7
+#define SIZE 8
 
-void PrintBoard(int board[][SIZE])
+int sum = 0;
+
+void PrintBoard(int board[SIZE][SIZE])
 {
     int i, j;
-    for(i = 0; i < 8; i++)
+    for(i = 0; i < SIZE; i++)
     {
-        for(j = 0; j < 8; j++)
+        for(j = 0; j < SIZE; j++)
         {
             switch (board[i][j])
             {
                 case 0:
-                    printf("+");
+                    printf("¡Á");
                     continue;
                 case 1:
-                    printf("Q");
+                    printf("ºó");
                     continue;
             }
         }
@@ -25,12 +27,12 @@ void PrintBoard(int board[][SIZE])
     return;
 }
 
-int Check(int board[][SIZE], int x, int y)
+int Check(int board[SIZE][SIZE], int x, int y)
 {
     int i = x;
     int j = y;
 
-    if(i > SIZE || j > SIZE)
+    if(i >= SIZE || j >= SIZE)
         return 0;
 
     j = y;
@@ -52,7 +54,7 @@ int Check(int board[][SIZE], int x, int y)
 
     i = x;
     j = y;
-    while(i >= 0 && j <= SIZE)
+    while(i >= 0 && j < SIZE)
     {
         if(board[i][j] == 1)
             return 0;
@@ -62,7 +64,7 @@ int Check(int board[][SIZE], int x, int y)
 
     i = x;
     j = y;
-    while(i <= SIZE && j >= 0)
+    while(i < SIZE && j >= 0)
     {
         if(board[i][j] == 1)
             return 0;
@@ -72,7 +74,7 @@ int Check(int board[][SIZE], int x, int y)
 
     i = x;
     j = y;
-    while(i <= SIZE && j <= SIZE)
+    while(i < SIZE && j < SIZE)
     {
         if(board[i][j] == 1)
             return 0;
@@ -82,78 +84,50 @@ int Check(int board[][SIZE], int x, int y)
     return 1;
 }
 
-void InitBoard(int board[][SIZE])
+void InitBoard(int board[SIZE][SIZE])
 {
     int i,j;
 
-    for(i = 0; i <= SIZE; i++)
+    for(i = 0; i < SIZE; i++)
     {
-        for(j = 0; j <= SIZE; j++)
+        for(j = 0; j < SIZE; j++)
         {
             board[i][j] = 0;
         }
     }
 }
 
-int Solve(int board[][SIZE], int x, int y)
+int Solve(int board[SIZE][SIZE], int x)
 {
-    int i = 0;
-    int j = 0;
-    int prep;
+    int i;
 
-    if(Check(board, x, y) == 1)
+    for(i = 0; i < SIZE; i++)
     {
-        board[x][y] = 1;
-        PrintBoard(board);
-        if(x == SIZE)
+        if(Check(board, x, i) == 1)
         {
-            PrintBoard(board);
-            for(j = 0; j <= SIZE; j++)
+            board[x][i] = 1;
+            if(x == SIZE-1)
             {
-                if(board[0][j] == 1)
-                {
-                    if(j != SIZE)
-                    {
-                        prep = j;
-                        InitBoard(board);
-                        Solve(board, prep + 1, 0);
-                    }
-                    else
-                        return;
-                }
-            }
-        }
-        else
-            Solve(board, x+1, 0);
-    }
-    else
-    {
-        if(y >= SIZE)
-        {
-            if(x == 0)
+                sum++;
+                printf("%d:\n", sum);
+                PrintBoard(board);
+                board[x][i] = 0;
                 return;
-            for(j = 0; j <= SIZE; j++)
+            }
+            else
             {
-                if(board[x-1][j] == 1)
-                {
-                    prep = j;
-                    board[x-1][j] = 0;
-                    PrintBoard(board);
-                    Solve(board, x-1, j+1);
-                }
+                Solve(board, x+1);
+                board[x][i] = 0;
             }
         }
-        else
-        {
-            Solve(board, x, y+1);
-        }
     }
+    return;
 }
 
 int main()
 {
-    int board[8][8] = {0};
-    PrintBoard(board);
-    Solve(board, 0, 0);
+    int board[SIZE][SIZE] = {0};
+    //PrintBoard(board);
+    Solve(board, 0);
     return 0;
 }
