@@ -83,7 +83,8 @@ void PrintStack(stacktype *s)
 void H(int amount, char X, char Y, char Z)
 {
     stacktype *s;
-    elemtype e, e1, e2, e3;
+    elemtype e;
+    char temp;
     if (amount <= 0)
         return;
     InitStack(&s);
@@ -98,30 +99,33 @@ void H(int amount, char X, char Y, char Z)
         e = Pop(s);
         if(e.flag == 0)
         {
-            e1.amount = e.amount-1;
-            e1.X = e.Y;
-            e1.Y = e.X;
-            e1.Z = e.Z;
-            if(e1.amount == 1)
-                e1.flag = 1;
+            e.amount = e.amount-1;
+            temp = e.X;
+            e.X = e.Y;
+            e.Y = temp;
+            e.Z = e.Z;
+            if(e.amount == 1)
+                e.flag = 1;
             else
-                e1.flag = 0;
-            Push(e1, s);
-            e2.amount = e.amount;
-            e2.X = e.X;
-            e2.Y = e.Y;
-            e2.Z = e.Z;
-            e2.flag = 1;
-            Push(e2, s);
-            e3.amount = e.amount-1;
-            e3.X = e.X;
-            e3.Y = e.Z;
-            e3.Z = e.Y;
-            if(e3.amount == 1)
-                e3.flag = 1;
+                e.flag = 0;
+            Push(e, s);
+            e.amount = e.amount+1;
+            temp = e.X;
+            e.X = e.Y;
+            e.Y = temp;
+            e.Z = e.Z;
+            e.flag = 1;
+            Push(e, s);
+            e.amount = e.amount-1;
+            temp = e.Y;
+            e.X = e.X;
+            e.Y = e.Z;
+            e.Z = temp;
+            if(e.amount == 1)
+                e.flag = 1;
             else
-                e3.flag = 0;
-            Push(e3, s);
+                e.flag = 0;
+            Push(e, s);
         }
         else
             printf("plate%d:%c tower->%c tower\n", e.amount, e.X, e.Z);
@@ -134,7 +138,7 @@ int main()
     char a = 'A';
     char b = 'B';
     char c = 'C';
-    int amount = 3;
+    int amount = 10;
     H(amount, a, b, c);
     return 0;
 }
