@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int perm(char *a, int i, int n)
+int perm(char *p, int i, int n)
 {
     int j;
-    int temp;
-    char p[4];
-    for(j = 0; j < 4; j++)
-    {
-        p[j] = a[j];
-    }
+    char temp;
+ //   char p[4];
+ //   for(j = 0; j < 4; j++)
+ //   {
+ //       p[j] = a[j];
+ //   }
 
     if (i == n)
     {
@@ -19,24 +19,29 @@ int perm(char *a, int i, int n)
     {
         for (j = i; j < n; j++)
         {
-            temp = p[i];
-            p[i] = p[j];
-            p[j] = temp;
+            if(i!=j)
+            {
+                temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
 
             perm(p, i+1, n);
 
-            temp = p[i];
-            p[i] = p[j];
-            p[j] = temp;
+            if(i!=j)
+            {
+                temp = p[i];
+                p[i] = p[j];
+                p[j] = temp;
+            }
         }
     }
 }
 
 int main()
 {
-    int n = 3;
-    char a[4] = "abc";
-    printf("ÅÅÁĞ:\n");
-    perm(a, 0, n);
+    char a[] = "abcde";
+    printf("output:\n");
+    perm(a, 0, sizeof(a)-1);
     return 0;
 }
