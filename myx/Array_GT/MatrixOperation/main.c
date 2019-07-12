@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define SIZE 4
-#define Maxsize 5
+#define Maxsize 10
 
 typedef struct triple
 {
@@ -45,7 +45,7 @@ void MatrixTran(List *a, List *b)
     }
 }
 
-void *CreateList(int a[][SIZE], List *p)
+void CreateList(int a[SIZE][SIZE], List *p)
 {
     p->length = SIZE;
     p->width = SIZE;
