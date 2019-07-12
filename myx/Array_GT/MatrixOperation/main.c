@@ -2,7 +2,7 @@
 //
 // 1 0 3 0                3 0 0 0
 // 0 1 0 0                0 4 0 0
-// 0 0 1 0                0 0 1 0
+// 0 0 1 0                0 0 1 3
 // 0 0 1 1                0 0 0 2
 //
 //2. 输出a转置矩阵的三元组
@@ -99,37 +99,25 @@ void PrintMatrix(List *A)
 
 void MatrixAdd(List *a, List *b, List *apb)
 {
-    int i,j,k,f;
-    i = j = f = k = 0;
-    for(i = 0; i < a->num; i++)
+    int i,j,k, num;
+    i = j = k = num = 0;
+    for(i = 0; i < SIZE; i++)
     {
-        apb->element[i].x = a->element[i].x;
-        apb->element[i].y = a->element[i].y;
-        apb->element[i].data = a->element[i].data;
-    }
-    for(j = 0; j < b->num; j++)
-    {
-        for(k = 0; k < a->num; k++)
+        for(j = 0; j < SIZE; j++)
         {
-            if(a->element[k].x == b->element[j].x && a->element[k].y == b->element[j].y)
+            if(find(a, i+1, j+1) + find(b, i+1, j+1) != 0)
             {
-                apb->element[k].data += b->element[j].data;
-                f = 1;
-                break;
+                apb->element[k].x = i+1;
+                apb->element[k].y = j+1;
+                apb->element[k].data = find(a, i+1, j+1) + find(b, i+1, j+1);
+                num++;
+                k++;
             }
         }
-        if(f == 0)
-        {
-            i++;
-            apb->element[i].x = b->element[j].x;
-            apb->element[i].y = b->element[j].y;
-            apb->element[i].data = b->element[j].data;
-        }
-        f = 0;
     }
     apb->length = a->length;
-    apb->width = b->width;
-    apb->num = a->num > b->num ? a->num : b->num;
+    apb->width = a->width;
+    apb->num = num;
 }
 
 int find(List *a, int x, int y)
@@ -175,7 +163,7 @@ void MatrixMultiply(List *a, List *b, List *amb)
 int main()
 {
     int a[SIZE][SIZE] = {1,0,3,0,0,1,0,0,0,0,1,0,0,0,1,1};
-    int b[SIZE][SIZE] = {3,0,0,0,0,4,0,0,0,0,1,0,0,0,0,2};
+    int b[SIZE][SIZE] = {3,0,0,0,0,4,0,0,0,0,1,3,0,0,0,2};
     List *A,*B,*TA,*TB,*ApB,*AmB;
     A = (List *)malloc(sizeof(List));
     B = (List *)malloc(sizeof(List));
