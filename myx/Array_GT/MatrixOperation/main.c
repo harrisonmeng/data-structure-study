@@ -149,20 +149,20 @@ void MatrixMultiply(List *a, List *b, List *amb)
 {
 	int sum,num,i,j,k;
 	sum = num = i = j = k = 0;
-    for(i = 0; i < a->length; i++)
+    for(i = 0; i < a->width; i++)
     {
-        for(j = 0; j < b->width; j++)
+        for(j = 0; j < b->length; j++)
         {
             sum = 0;
-            for(k = 0; k < a->width; k++)
+            for(k = 0; k < a->length; k++)
             {
-                sum = sum + find(a, i, k) * find(b, k, j);
+                sum += find(a, i+1, k+1) * find(b, k+1, j+1);
             }
             if(sum != 0)
             {
                 amb->element[num].data = sum;
-                amb->element[num].x = i;
-                amb->element[num].y = j;
+                amb->element[num].x = i+1;
+                amb->element[num].y = j+1;
                 num++;
             }
         }
