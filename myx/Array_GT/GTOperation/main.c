@@ -135,7 +135,7 @@ char FindLargest(GLNode *a)
 int main()
 {
     GLNode *a;
-    char list[] = "(b,(b,a,(#),d),((a,b),c,((#))))";
+    char list[] = "(f ,b,(b,a,(#),d),((a,b),c,((#))))";
 
     a = CreateList(list);
 
