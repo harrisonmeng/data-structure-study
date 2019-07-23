@@ -9,7 +9,7 @@ typedef struct BTNode
     struct BTNode *rchild;
     struct BTNode *next;
     int data;
-    int tag;
+//    int tag;
     int freq;
 }BTNode;
 
@@ -43,7 +43,7 @@ void GiveValue(BTNode *l, char *n)
 
 //void GiveValue(BTNode *l)
 
-BTNode *CreateTree(BTNode *l, BTNode *a)
+BTNode *CreateTree(BTNode *l)
 {
     BTNode *x;
     BTNode *y;
@@ -59,17 +59,17 @@ BTNode *CreateTree(BTNode *l, BTNode *a)
         p->lchild = x;
         p->rchild = y;
         p->freq = x->freq + y->freq;
-        p->tag = 0;
+//        p->tag = 0;
 
         l->next = y->next;
         x->next = NULL;
-        x->lchild = NULL;
-        x->rchild = NULL;
-        x->tag = 0;
+//        x->lchild = NULL;
+//        x->rchild = NULL;
+//        x->tag = 0;
         y->next = NULL;
-        y->lchild = NULL;
-        y->rchild = NULL;
-        y->tag = 0;
+//        y->lchild = NULL;
+//        y->rchild = NULL;
+//        y->tag = 0;
 
         printf("%d + %d = %d\n", x->freq, y->freq, p->freq);
         q = l->next;
@@ -87,56 +87,78 @@ BTNode *CreateTree(BTNode *l, BTNode *a)
 int main()
 {
     FILE *picture;
-    FILE *out;
+ //   FILE *out;
     char s[9] = {0};
-    int f[256] = {0};
+ //   int f[256] = {0};
     int frequncy[256] = {0};
     int total = 0;
     int c,i,j;
-    BTNode *huffman = (BTNode *) malloc(sizeof(BTNode));
+//    BTNode *huffman = (BTNode *) malloc(sizeof(BTNode));
     picture = fopen("1.bmp","rb");
-    out = fopen("out.txt","ws");
+    // out = fopen("out.txt","ws");
     while(!feof(picture))
     {
         c = fgetc(picture);
-        sprintf(s,"%x ",c);
-        f[c]++;
-        fputs(s,out);
+        //sprintf(s,"%x ",c);
+        frequncy[c]++;
+        //fputs(s,out);
         total++;
     }
+
     for(i = 0; i < 256; i++)
-    {
-       frequncy[i] = f[i];
-    }
-    for(i = 0; i < 256; i++)
-        printf("%x:%d:%d\n", i, f[i], frequncy[i]);
+        printf("0x%02X: %d\n", i, frequncy[i]);
+
+    fclose(picture);
 
     BTNode *l = (BTNode*)malloc(sizeof(BTNode));
-    BTNode *p = l;
-    int min;
-    int minnum;
+    l->freq = 0;
+    l->next = NULL;
+    BTNode *p, *prev, *temp;
     for(i = 0; i < 256; i++)
     {
-        min = 9999999;
-        min = 9999999;
-        p->next = (BTNode *)malloc(sizeof(BTNode));
-        p->next->next = NULL;
-        for(j = 0; j < 256; j++)
+        if(frequncy[i] == 0)
+            continue;
+        p = (BTNode *)malloc(sizeof(BTNode));
+        p->next = NULL;
+        p->data = i;
+        p->tag = 0;
+        p->freq = frequncy[i];
+        p->lchild = NULL;
+        p->rchild = NULL;
+
+        prev = l;
+        temp = l->next;
+        if(l->next)
         {
-            if(frequncy[j] < min)
+            while(temp && temp->freq < p->freq)
             {
-                min = frequncy[j];
-                minnum = j;
+                prev = temp;
+                temp = temp->next;
+            }
+            if(temp)
+            {
+                prev->next = p;
+                p->next = temp;
+            }
+            else
+            {
+                prev->next = p;
             }
         }
-        frequncy[minnum] = 99999999;
-        p->next->freq = min;
-        p->next->data = minnum;
-        p->next->tag = 0;
+        else
+        {
+            l->next = p;
+        }
+    }
+
+    p = l->next;
+    while(p)
+    {
+        printf("0x%02x --- freq = %d\n", p->data, p->freq);
         p = p->next;
     }
 
-    CreateTree(l, huffman);
-    GiveValue(huffman, list);
+    CreateTree(l);
+    GiveValue(l, list);
     return 0;
 }
