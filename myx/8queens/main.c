@@ -14,10 +14,10 @@ void PrintBoard(int board[SIZE][SIZE])
             switch (board[i][j])
             {
                 case 0:
-                    printf("¡Á");
+                    printf("ï¿½ï¿½");
                     continue;
                 case 1:
-                    printf("ºó");
+                    printf("ï¿½ï¿½");
                     continue;
             }
         }
@@ -26,6 +26,8 @@ void PrintBoard(int board[SIZE][SIZE])
     printf("\n");
     return;
 }
+
+//modification test on new branch
 
 int Check(int board[SIZE][SIZE], int x, int y)
 {
